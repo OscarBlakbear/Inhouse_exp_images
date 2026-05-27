@@ -1,0 +1,17 @@
+# sync.ps1
+$repo = "G:\Shared drives\Engineering\Hardware\RnD\Inhouse_exp_images"
+Set-Location $repo
+$watcher = New-Object System.IO.FileSystemWatcher $repo, "*.jpg"
+$watcher.IncludeSubdirectories = $false
+$watcher.EnableRaisingEvents = $true
+$action = {
+    Start-Sleep -Seconds 30  # wait for Drive to finish writing the file
+    Set-Location "G:\Shared drives\Engineering\Hardware\RnD\Inhouse_exp_images"
+    git add .
+    if (git status --porcelain) {
+        git commit -m "Auto-sync $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+        git push
+    }
+}
+Register-ObjectEvent $watcher "Created" -Action $action | Out-Null
+while ($true) { Start-Sleep -Seconds 60 }
