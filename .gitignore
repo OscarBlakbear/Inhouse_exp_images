@@ -1,0 +1,9 @@
+# Auto-sync watcher and its log — local utility files, not part of the image archive
+sync.ps1
+sync.log
+install_sync_task.ps1
+
+# OS / Drive metadata
+Thumbs.db
+.DS_Store
+desktop.ini
